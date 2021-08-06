@@ -8,6 +8,7 @@ const session = require('express-session');
 const MongoStore=require('connect-mongo')(session);
 const googleStrategy = require('./config/passport-google-oauth2.0.js');
 const sassMiddleware=require('node-sass-middleware');
+const flash = require('connect-flash');
 
 //setting up scss middleware
 app.use(sassMiddleware({
@@ -18,7 +19,7 @@ app.use(sassMiddleware({
     prefix: '/css'
 }));
 
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true}));
 
 app.use(express.static('./assets'));
 
@@ -51,6 +52,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+// connect-flash after the session!!!
+app.use(flash());
 
 // use express router
 
